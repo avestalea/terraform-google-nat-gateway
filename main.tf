@@ -47,7 +47,7 @@ data "google_compute_network" "network" {
 }
 
 module "nat-gateway" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "github.com/avestalea/terraform-google-managed-instance-group"
   project           = "${var.project}"
   region            = "${var.region}"
   zone              = "${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
@@ -95,5 +95,7 @@ resource "google_compute_firewall" "nat-gateway" {
 }
 
 resource "google_compute_address" "default" {
-  name = "nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
+    name = "nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
+  region = "${var.region}"
+  
 }
