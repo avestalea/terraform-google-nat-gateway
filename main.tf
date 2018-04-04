@@ -26,6 +26,8 @@ apt-get update
 
 # Install nginx for instance http health check
 apt-get install -y nginx
+# add prometheus exporter
+apt-get install -y prometheus-node-exporter
 
 ENABLE_SQUID="${var.squid_enabled}"
 
