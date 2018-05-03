@@ -130,5 +130,8 @@ variable region_params {
     southamerica-east1 {
       zone = "southamerica-east1-b"
     }
+    northamerica-northeast1 {
+      zone = "northamerica-northeast1-b"
+    }
   }
 }
