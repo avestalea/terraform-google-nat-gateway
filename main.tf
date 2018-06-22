@@ -15,32 +15,13 @@
  */
 
 data "template_file" "nat-startup-script" {
-  template = <<EOF
-#!/bin/bash -xe
+  template = "${file("${format("%s/config/startup.sh", path.module)}")}"
 
-# Enable ip forwarding and nat
-sysctl -w net.ipv4.ip_forward=1
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-apt-get update
-
-# Install nginx for instance http health check
-apt-get install -y nginx
-# add prometheus exporter
-apt-get install -y prometheus-node-exporter
-
-ENABLE_SQUID="${var.squid_enabled}"
-
-if [[ "$ENABLE_SQUID" == "true" ]]; then
-  apt-get install -y squid3
-
-  cat - > /etc/squid3/squid.conf <<'EOM'
-${file("${var.squid_config == "" ? "${format("%s/config/squid.conf", path.module)}" : var.squid_config}")}
-EOM
-
-  systemctl reload squid3
-fi
-EOF
+  vars {
+    squid_enabled = "${var.squid_enabled}"
+    squid_config  = "${var.squid_config}"
+    module_path   = "${path.module}"
+  }
 }
 
 data "google_compute_network" "network" {
@@ -97,7 +78,6 @@ resource "google_compute_firewall" "nat-gateway" {
 }
 
 resource "google_compute_address" "default" {
-    name = "nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
+  name   = "nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
   region = "${var.region}"
-  
 }
