@@ -83,6 +83,10 @@ variable region_params {
       zone = "us-west1-b"
     }
 
+    us-west2 {
+      zone = "us-west2-b"
+    }
+
     us-central1 {
       zone = "us-central1-f"
     }
