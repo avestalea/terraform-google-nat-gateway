@@ -68,22 +68,21 @@ module "nat-gateway" {
   service_port          = "80"
   service_port_name     = "http"
   startup_script        = "${data.template_file.nat-startup-script.rendered}"
-  wait_for_instances    = true
   metadata              = "${var.metadata}"
   ssh_source_ranges     = "${var.ssh_source_ranges}"
   http_health_check     = "${var.autohealing_enabled}"
 
   update_strategy = "ROLLING_UPDATE"
 
-  rolling_update_policy = [
-    {
-      type                  = "PROACTIVE"
-      minimal_action        = "REPLACE"
-      max_surge_fixed       = 0
-      max_unavailable_fixed = 1
-      min_ready_sec         = 30
-    },
-  ]
+//  rolling_update_policy = [
+//    {
+//      type                  = "PROACTIVE"
+//      minimal_action        = "REPLACE"
+//      max_surge_fixed       = 0
+//      max_unavailable_fixed = 1
+//      min_ready_sec         = 30
+//    },
+//  ]
 
   access_config = [
     {
