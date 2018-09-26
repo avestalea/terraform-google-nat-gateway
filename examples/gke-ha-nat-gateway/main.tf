@@ -26,8 +26,20 @@ variable region {
   default = "us-central1"
 }
 
-variable zone {
-  default = "us-central1-f"
+variable zone1 {
+  default = "us-central1-a"
+}
+
+variable zone2 {
+  default = "us-central1-b"
+}
+
+variable zone3 {
+  default = "us-central1-c"
+}
+
+variable name {
+  default = "gke-ha"
 }
 
 variable network {
@@ -42,14 +54,37 @@ provider google {
   region = "${var.region}"
 }
 
-module "nat" {
-  // source  = "github.com/GoogleCloudPlatform/terraform-google-nat-gateway"
-  source     = "../../"
-  region     = "${var.region}"
-  zone       = "${var.zone}"
-  tags       = ["${var.gke_node_tag}"]
-  network    = "${var.network}"
-  subnetwork = "${var.subnetwork == "" ? var.network : var.subnetwork}"
+module "nat-zone-1" {
+  source         = "../../"
+  name           = "${var.name}-"
+  region         = "${var.region}"
+  zone           = "${var.zone1}"
+  tags           = ["${var.gke_node_tag}"]
+  network        = "${var.network}"
+  subnetwork     = "${var.subnetwork == "" ? var.network : var.subnetwork}"
+  route_priority = 800
+}
+
+module "nat-zone-2" {
+  source         = "../../"
+  name           = "${var.name}-"
+  region         = "${var.region}"
+  zone           = "${var.zone2}"
+  tags           = ["${var.gke_node_tag}"]
+  network        = "${var.network}"
+  subnetwork     = "${var.subnetwork == "" ? var.network : var.subnetwork}"
+  route_priority = 800
+}
+
+module "nat-zone-3" {
+  source         = "../../"
+  name           = "${var.name}-"
+  region         = "${var.region}"
+  zone           = "${var.zone3}"
+  tags           = ["${var.gke_node_tag}"]
+  network        = "${var.network}"
+  subnetwork     = "${var.subnetwork == "" ? var.network : var.subnetwork}"
+  route_priority = 800
 }
 
 // Route so that traffic to the master goes through the default gateway.
@@ -64,6 +99,14 @@ resource "google_compute_route" "gke-master-default-gw" {
   priority         = 700
 }
 
-output "ip-nat-gateway" {
-  value = "${module.nat.external_ip}"
+output "ip-nat-zone-1" {
+  value = "${module.nat-zone-1.external_ip}"
+}
+
+output "ip-nat-zone-2" {
+  value = "${module.nat-zone-2.external_ip}"
+}
+
+output "ip-nat-zone-3" {
+  value = "${module.nat-zone-3.external_ip}"
 }

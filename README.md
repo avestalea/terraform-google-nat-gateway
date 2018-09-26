@@ -2,6 +2,9 @@
 
 Modular NAT Gateway on Google Compute Engine for Terraform.
 
+<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-nat-gw-regression" target="_blank">
+<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-nat-gw-regression/badge" /></a>
+        
 ## Usage
 
 ```ruby
@@ -13,7 +16,23 @@ module "nat" {
 }
 ```
 
-Add the `nat-REGION-ZONE` and  `nat-REGION` tags to your instances without external IPs to route outbound traffic through the nat gateway.
+And add the tag `${module.nat.routing_tag_regional}` to your instances without external IPs to route outbound traffic through the nat gateway.
+
+## Usage
+
+```ruby
+module "mig" {
+  source      = "GoogleCloudPlatform/managed-instance-group/google"
+  version     = "1.1.13"
+  region      = "us-central1"
+  zone        = "us-central1-a"
+  name        = "testnat"
+  target_tags = ["${module.nat.routing_tag_regional}"]
+  network     = "default"
+  subnetwork  = "default"
+}
+```
+
 
 ## Resources created
 
