@@ -127,42 +127,6 @@ variable region_params {
   type        = "map"
 
   default = {
-    us-west1 {
-      zone = "us-west1-b"
-    }
-
-    us-west2 {
-      zone = "us-west2-b"
-    }
-
-    us-central1 {
-      zone = "us-central1-f"
-    }
-
-    us-east1 {
-      zone = "us-east1-b"
-    }
-
-    us-east4 {
-      zone = "us-east4-b"
-    }
-
-    europe-west1 {
-      zone = "europe-west1-b"
-    }
-
-    europe-west2 {
-      zone = "europe-west2-b"
-    }
-
-    europe-west3 {
-      zone = "europe-west3-b"
-    }
-
-    asia-southeast1 {
-      zone = "asia-southeast1-b"
-    }
-
     asia-east1 {
       zone = "asia-east1-b"
     }
