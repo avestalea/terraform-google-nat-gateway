@@ -51,8 +51,7 @@ module "nat-gateway" {
   local_cmd_create = "sleep 30"
 
   access_config = [{
-//    nat_ip = "${google_compute_address.default.address}"
-    nat_ip = "${google_compute_address.default.*.address}"
+    nat_ip = "${google_compute_address.default.address}"
   }]
 
 //  access_config = [
